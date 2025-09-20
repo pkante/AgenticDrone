@@ -13,7 +13,7 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 class LLMPlanner():
     def __init__(self, robot_type: RobotType):
         self.llm = LLMWrapper()
-        self.model_name = GPT5
+        self.model_name = GPT4
 
         type_folder_name = 'tello'
         if robot_type == RobotType.GEAR:

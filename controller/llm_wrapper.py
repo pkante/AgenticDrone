@@ -48,12 +48,16 @@ class LLMWrapper:
         else:
             client = self.gpt_client
         
-        response = client.chat.completions.create(
-            model=model_name,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=self.temperature,
-            stream=stream,
-        )
+        request_kwargs = {
+            "model": model_name,
+            "messages": [{"role": "user", "content": prompt}],
+            "stream": stream,
+        }
+
+        if model_name != GPT5:
+            request_kwargs["temperature"] = self.temperature
+
+        response = client.chat.completions.create(**request_kwargs)
 
         # save the message in a txt
         with chat_log_path.open("a", encoding="utf-8") as f:
