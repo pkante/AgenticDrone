@@ -12,7 +12,7 @@ PARENT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__f
 sys.path.append(PARENT_DIR)
 from controller.llm_controller import LLMController
 from controller.utils import print_t
-from controller.llm_wrapper import GPT4, LLAMA3
+from controller.llm_wrapper import GPT5, LLAMA3
 from controller.abs.robot_wrapper import RobotType
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -40,18 +40,18 @@ class TypeFly:
         with self.ui:
             gr.HTML(open(os.path.join(CURRENT_DIR, 'header.html'), 'r').read())
             gr.HTML(open(os.path.join(CURRENT_DIR, 'drone-pov.html'), 'r').read())
-            gr.ChatInterface(self.process_message, retry_btn=None, fill_height=False, examples=default_sentences).queue()
-            # TODO: Add checkbox to switch between llama3 and gpt4
+            gr.ChatInterface(self.process_message, fill_height=False, examples=default_sentences).queue()
+            # TODO: Add checkbox to switch between llama3 and gpt5
             # gr.Checkbox(label='Use llama3', value=False).select(self.checkbox_llama3)
 
     def checkbox_llama3(self):
         self.use_llama3 = not self.use_llama3
         if self.use_llama3:
-            print_t(f"Switch to llama3")
+            print_t("Switch to llama3")
             self.llm_controller.planner.set_model(LLAMA3)
         else:
-            print_t(f"Switch to gpt4")
-            self.llm_controller.planner.set_model(GPT4)
+            print_t("Switch to gpt5")
+            self.llm_controller.planner.set_model(GPT5)
 
     def process_message(self, message, history):
         print_t(f"[S] Receiving task description: {message}")

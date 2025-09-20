@@ -1,13 +1,34 @@
 import os
+from pathlib import Path
+
 import openai
 from openai import Stream, ChatCompletion
 
 GPT3 = "gpt-3.5-turbo-16k"
 GPT4 = "gpt-4"
+GPT5 = "gpt-5"
 LLAMA3 = "meta-llama/Meta-Llama-3-8B-Instruct"
 
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-chat_log_path = os.path.join(CURRENT_DIR, "assets/chat_log.txt")
+CURRENT_DIR = Path(__file__).resolve().parent
+ROOT_DIR = CURRENT_DIR.parent
+chat_log_path = CURRENT_DIR / "assets" / "chat_log.txt"
+
+
+def _load_env_file():
+    env_path = ROOT_DIR / ".env"
+    if not env_path.exists():
+        return
+
+    with env_path.open("r", encoding="utf-8") as env_file:
+        for raw_line in env_file:
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key, value)
+
+
+_load_env_file()
 
 class LLMWrapper:
     def __init__(self, temperature=0.0):
@@ -21,7 +42,7 @@ class LLMWrapper:
             api_key=os.environ.get("OPENAI_API_KEY"),
         )
 
-    def request(self, prompt, model_name=GPT4, stream=False) -> str | Stream[ChatCompletion.ChatCompletionChunk]:
+    def request(self, prompt, model_name=GPT5, stream=False) -> str | Stream[ChatCompletion.ChatCompletionChunk]:
         if model_name == LLAMA3:
             client = self.llama_client
         else:
@@ -35,7 +56,7 @@ class LLMWrapper:
         )
 
         # save the message in a txt
-        with open(chat_log_path, "a") as f:
+        with chat_log_path.open("a", encoding="utf-8") as f:
             f.write(prompt + "\n---\n")
             if not stream:
                 f.write(response.model_dump_json(indent=2) + "\n---\n")

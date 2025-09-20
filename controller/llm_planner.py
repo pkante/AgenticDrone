@@ -2,7 +2,7 @@ import os, ast
 from typing import Optional
 
 from .skillset import SkillSet
-from .llm_wrapper import LLMWrapper, GPT3, GPT4
+from .llm_wrapper import LLMWrapper, GPT3, GPT4, GPT5
 from .vision_skill_wrapper import VisionSkillWrapper
 from .utils import print_t
 from .minispec_interpreter import MiniSpecValueType, evaluate_value
@@ -13,7 +13,7 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 class LLMPlanner():
     def __init__(self, robot_type: RobotType):
         self.llm = LLMWrapper()
-        self.model_name = GPT4
+        self.model_name = GPT5
 
         type_folder_name = 'tello'
         if robot_type == RobotType.GEAR:
