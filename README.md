@@ -1,7 +1,6 @@
-# TypeFly on Apple Silicon
+# Agentic Drone
 
-This fork packages TypeFly so it runs smoothly on Apple silicon machines with a native YOLO stack and a simplified local workflow.
-
+This fork packages TypeFly so it runs smoothly on my mac
 ## Getting Started
 
 1. **Install dependencies**
@@ -33,14 +32,3 @@ This fork packages TypeFly so it runs smoothly on Apple silicon machines with a 
   ```bash
   make SERVICE=yolo stop
   ```
-
-## Repository Layout
-
-- `controller/` – robot control, shared frame buffer, and planner integration.
-- `serving/webui/` – Gradio UI, Flask MJPEG stream, and requirement bootstrapper.
-- `serving/yolo/` – gRPC YOLO service entrypoint.
-- `docker/yolo/` – Dockerfile for the native YOLO image used on Apple silicon.
-
-## License
-
-See `LICENSE.md` for licensing details.
